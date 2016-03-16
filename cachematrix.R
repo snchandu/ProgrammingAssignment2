@@ -1,7 +1,13 @@
-## Put comments here that give an overall description of what your
-## functions do
+## The goal here is to compute the inverse of an invertible square matrix.
+## Also want to store it somewhere, so we don't have to compute the
+## inverse more than once. Indeed, for large matrices,
+## computing its inverse can take a lot of space and time.
 
-## makeCacheMatrix set the Matrix, Get the Matrix, Set the Inverse and Getthe Inerse
+## This function creates a new object, which consists of 4 functions that 
+## can set and access to the value of a given matrix which is stocked outside 
+## its environnement, the same for its inverse.
+
+## makeCacheMatrix set the Matrix, Get the Matrix, Set the Inverse and Get the Inerse
 makeCacheMatrix <- function(x = matrix()) {
   ## Input: x: A square invertible matrix
   ## return: a list containing functions to
@@ -23,13 +29,16 @@ makeCacheMatrix <- function(x = matrix()) {
   list(set=set, get=get, setinv=setinv, getinv=getinv)
 }
 
-## Create Inverse of the original Matrix input to makecacheMatrix
-## If doesn't exists in the  Cache, creates one for us 
+## This function actually inverts a given matrix. The argument is this object
+## we've defined before, so we can check if the inverse of this matrix have been
+## already computed. In that case, the function the inverse and prints "getting
+## cached data". Otherwise, it simply computes the inverse of the matrix and stores
+## the inverse outside this environnement and returns the env.
 
 cacheSolve <- function(x, ...) {
   ## @x: output of makeCacheMatrix()
   ## return: inverse of the original matrix input to makeCacheMatrix()
-  inv = x$getinv()
+  inv <- x$getinv()
   # if the inverse has already been calculated
   if (!is.null(inv)){
     # get it from the cache and skips the computation. 
@@ -37,8 +46,8 @@ cacheSolve <- function(x, ...) {
     return(inv)
   }
   # otherwise, calculates the inverse 
-  mat.data = x$get()
-  inv = solve(mat.data, ...)
+  mat.data <- x$get()
+  inv <- solve(mat.data, ...)
   # sets the value of the inverse in the cache via the setinv function.
   x$setinv(inv)
   return(inv)
